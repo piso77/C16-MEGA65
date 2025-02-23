@@ -10,4 +10,5 @@ can be checked in the "About & Help" menu of the core.
 | Name         | Date       | Commit  | Comment
 |--------------|------------|---------|--------------------------------------
 | V1.0A1       | 2025-02-22 | 1b58328 | First version that is able to load and run PRG files
+| V1.1A1       | 2025-02-23 | 099102f | Update to M2M V2.0.1
 
