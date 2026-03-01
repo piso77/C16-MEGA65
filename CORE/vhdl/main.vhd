@@ -269,80 +269,84 @@ begin
    end process v20_en_proc;
 
    --------------------------------------------------------------------------------------------------
-   -- MiSTer VIC 20 core / main machine
+   -- MiSTer C16 core / main machine
    --------------------------------------------------------------------------------------------------
 
-   vic20_inst : entity work.vic20
+   c16_inst : entity work.c16
       port map (
-         i_sysclk      => clk_main_i,
-         i_sysclk_en   => v20_en,
-         i_reset       => reset_soft_i or reset_hard_i,
-         i_restore_n   => restore_key_n,
-         o_p2h         => open,
-         i_ram_ext_ro  => "00000",   -- read-only region if set
-         i_ram_ext     => ram_ext_i, -- at $A000(8k),$6000(8k),$4000(8k),$2000(8k),$0400(3k)
-         i_extmem_en   => '0',
-         o_extmem_sel  => open,
-         o_extmem_r_wn => open,
-         o_extmem_addr => open,
-         i_extmem_data => x"00",
-         o_extmem_data => open,
-         o_io2_sel     => open,
-         o_io3_sel     => open,
-         o_blk123_sel  => open,
-         o_blk5_sel    => open,
-         o_ram123_sel  => open,
+         clk28      => clk_main_i,
+         reset      => reset_soft_i or reset_hard_i,
+         wait_i     => "0",
+
+--         i_sysclk_en   => v20_en,
+--         i_restore_n   => restore_key_n,
+--         o_p2h         => open,
+--         i_ram_ext_ro  => "00000",   -- read-only region if set
+--         i_ram_ext     => ram_ext_i, -- at $A000(8k),$6000(8k),$4000(8k),$2000(8k),$0400(3k)
+--         i_extmem_en   => '0',
+--         o_extmem_sel  => open,
+--         o_extmem_r_wn => open,
+--         o_extmem_addr => open,
+--         i_extmem_data => x"00",
+--         o_extmem_data => open,
+--         o_io2_sel     => open,
+--         o_io3_sel     => open,
+--         o_blk123_sel  => open,
+--         o_blk5_sel    => open,
+--         o_ram123_sel  => open,
 
          -- keyboard interface: directly connect the CIA1
-         cia1_pa_i     => cia1_pa_in(0) & cia1_pa_in(6 downto 1) & cia1_pa_in(7),
-         cia1_pa_o     => cia1_pa_out,
-         cia1_pb_i     => cia1_pb_in(3) & cia1_pb_in(6 downto 4) & cia1_pb_in(7) & cia1_pb_in(2 downto 0),
-         cia1_pb_o     => cia1_pb_out,
+--         cia1_pa_i     => cia1_pa_in(0) & cia1_pa_in(6 downto 1) & cia1_pa_in(7),
+--         cia1_pa_o     => cia1_pa_out,
+--         cia1_pb_i     => cia1_pb_in(3) & cia1_pb_in(6 downto 4) & cia1_pb_in(7) & cia1_pb_in(2 downto 0),
+--         cia1_pb_o     => cia1_pb_out,
 
          -- VGA/SCART interface
-         o_ce_pix      => video_ce,
-         o_hsync       => vga_hs,
-         o_vsync       => vga_vs,
-         o_video_r     => vga_red,
-         o_video_g     => vga_green,
-         o_video_b     => vga_blue,
-         o_hblank      => video_hblank_o,
-         o_vblank      => video_vblank_o,
+         ce_pix     => video_ce,
+         hsync      => vga_hs,
+         vsync      => vga_vs,
+         red        => vga_red,
+         green      => vga_green,
+         blue       => vga_blue,
+         hblank     => video_hblank_o,
+         vblank     => video_vblank_o,
+         tvmode     => "00",
+         wide       => "0"
          -- 00 = None
          -- 01 = Horz
          -- 10 = Vert
          -- 11 = Both
-         i_center      => center_i,
-         i_pal         => '1',
-         i_wide        => '0',
+--         i_center      => center_i,
+--         i_pal         => '1',
+--         i_wide        => '0',
 
          -- paddle interface
-         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
-         i_fire        => joy_1_fire_n_i,
-         i_potx        => pot1_x_i,
-         i_poty        => pot1_y_i,
+--         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
+--         i_fire        => joy_1_fire_n_i,
+--         i_potx        => pot1_x_i,
+--         i_poty        => pot1_y_i,
 
-         o_audio       => o_audio,
+--         o_audio       => o_audio,
 
          -- IEC
-         clk_i         => vic20_iec_clk_in and hw_iec_clk_n_in,
-         clk_o         => vic20_iec_clk_out,
-         atn_o         => vic20_iec_atn_out,
-         data_i        => vic20_iec_data_in and hw_iec_data_n_in,
-         data_o        => vic20_iec_data_out,
+--         clk_i         => vic20_iec_clk_in and hw_iec_clk_n_in,
+--         clk_o         => vic20_iec_clk_out,
+--         atn_o         => vic20_iec_atn_out,
+--         data_i        => vic20_iec_data_in and hw_iec_data_n_in,
+--        data_o        => vic20_iec_data_out,
 
          -- Cassette drive
-         cass_write    => open,
-         cass_motor    => open,
-         cass_sw       => '0',
-         cass_read     => '0',
+--         cass_write    => open,
+--         cass_motor    => open,
+--         cass_sw       => '0',
+--         cass_read     => '0',
 
-         rom_std       => vic20_rom_i,
-         conf_clk      => conf_clk_i,
-         conf_wr       => conf_wr_i,
-         conf_ai       => conf_ai_i,
-         conf_di       => conf_di_i
-      ); -- vic20_inst
+--         rom_std       => vic20_rom_i,
+--         conf_clk      => conf_clk_i,
+--         conf_wr       => conf_wr_i,
+--         conf_ai       => conf_ai_i,
+--         conf_di       => conf_di_i
+      ); -- c16_inst
 
    --------------------------------------------------------------------------------------------------
    -- Generate video output for the M2M framework
@@ -507,59 +511,59 @@ begin
       iec_drives_reset(i) <= (not reset_core_n) or (not vdrives_mounted(i));
    end generate iec_drv_reset_gen;
 
-   c1541_multi_inst : entity work.c1541_multi
-      generic map (
-         PARPORT => 0, -- Parallel C1541 port for faster (~20x) loading time using DolphinDOS
-         DUALROM => 1, -- Two switchable ROMs: Standard DOS and JiffyDOS
-         DRIVES  => G_VDNUM
-      )
-      port map (
-         clk          => clk_main_i,
-         ce           => iec_drive_ce,
-         reset        => iec_drives_reset,
-         pause        => '0',
+--   c1541_multi_inst : entity work.c1541_multi
+--      generic map (
+--         PARPORT => 0, -- Parallel C1541 port for faster (~20x) loading time using DolphinDOS
+--         DUALROM => 1, -- Two switchable ROMs: Standard DOS and JiffyDOS
+--         DRIVES  => G_VDNUM
+--      )
+--      port map (
+--         clk          => clk_main_i,
+--         ce           => iec_drive_ce,
+--         reset        => iec_drives_reset,
+--         pause        => '0',
 
-         -- interface to the VIC20 core
-         iec_clk_i    => vic20_iec_clk_out and hw_iec_clk_n_in,
-         iec_clk_o    => vic20_iec_clk_in,
-         iec_atn_i    => vic20_iec_atn_out,
-         iec_data_i   => vic20_iec_data_out and hw_iec_data_n_in,
-         iec_data_o   => vic20_iec_data_in,
+--         -- interface to the VIC20 core
+--         iec_clk_i    => vic20_iec_clk_out and hw_iec_clk_n_in,
+--         iec_clk_o    => vic20_iec_clk_in,
+--         iec_atn_i    => vic20_iec_atn_out,
+--         iec_data_i   => vic20_iec_data_out and hw_iec_data_n_in,
+--         iec_data_o   => vic20_iec_data_in,
 
-         -- disk image status
-         img_mounted  => iec_img_mounted,
-         img_readonly => iec_img_readonly,
-         img_size     => iec_img_size,
-         gcr_mode     => "00",                -- D64
+--         -- disk image status
+--         img_mounted  => iec_img_mounted,
+--         img_readonly => iec_img_readonly,
+--         img_size     => iec_img_size,
+--         gcr_mode     => "00",                -- D64
 
-         -- QNICE SD-Card/FAT32 interface
-         clk_sys      => iec_clk_sd_i,
+--         -- QNICE SD-Card/FAT32 interface
+--         clk_sys      => iec_clk_sd_i,
 
-         sd_lba       => iec_sd_lba,
-         sd_blk_cnt   => iec_sd_blk_cnt,
-         sd_rd        => iec_sd_rd,
-         sd_wr        => iec_sd_wr,
-         sd_ack       => iec_sd_ack,
-         sd_buff_addr => iec_sd_buf_addr,
-         sd_buff_dout => iec_sd_buf_data_in,  -- data from SD card to the buffer RAM within the drive ("dout" is a strange name)
-         sd_buff_din  => iec_sd_buf_data_out, -- read the buffer RAM within the drive
-         sd_buff_wr   => iec_sd_buf_wr,
+--         sd_lba       => iec_sd_lba,
+--         sd_blk_cnt   => iec_sd_blk_cnt,
+--         sd_rd        => iec_sd_rd,
+--         sd_wr        => iec_sd_wr,
+--         sd_ack       => iec_sd_ack,
+--         sd_buff_addr => iec_sd_buf_addr,
+--         sd_buff_dout => iec_sd_buf_data_in,  -- data from SD card to the buffer RAM within the drive ("dout" is a strange name)
+--         sd_buff_din  => iec_sd_buf_data_out, -- read the buffer RAM within the drive
+--         sd_buff_wr   => iec_sd_buf_wr,
 
-         -- drive led
-         led          => drive_led,
+--         -- drive led
+--         led          => drive_led,
 
-         -- Parallel C1541 port
-         par_stb_i    => iec_par_stb_in,
-         par_stb_o    => iec_par_stb_out,
-         par_data_i   => iec_par_data_in,
-         par_data_o   => iec_par_data_out,
+--         -- Parallel C1541 port
+--         par_stb_i    => iec_par_stb_in,
+--         par_stb_o    => iec_par_stb_out,
+--         par_data_i   => iec_par_data_in,
+--         par_data_o   => iec_par_data_out,
 
-         rom_std_i    => '1',                 -- 1=use the factory default ROM
-         rom_addr_i   => (others => '0'),
-         rom_data_i   => (others => '0'),
-         rom_data_o   => open,
-         rom_wr_i     => '1'
-      ); -- c1541_multi_inst
+--         rom_std_i    => '1',                 -- 1=use the factory default ROM
+--         rom_addr_i   => (others => '0'),
+--         rom_data_i   => (others => '0'),
+--         rom_data_o   => open,
+--         rom_wr_i     => '1'
+--      ); -- c1541_multi_inst
 
    -- 16 MHz chip enable for the IEC drives, so that ph2_r and ph2_f can be 1 MHz (C1541's CPU runs with 1 MHz)
    -- Uses a counter to compensate for clock drift, because the input clock is not exactly at 32 MHz
