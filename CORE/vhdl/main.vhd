@@ -142,9 +142,6 @@ architecture synthesis of main is
 
    signal   o_audio : std_logic_vector(5 downto 0);
 
-   -- the Restore key is special : it creates a non maskable interrupt (NMI)
-   signal   restore_key_n : std_logic;
-
    -- VIC20's IEC signals
    signal   vic20_iec_clk_out  : std_logic;
    signal   vic20_iec_clk_in   : std_logic;
@@ -191,7 +188,6 @@ architecture synthesis of main is
    signal   vga_green : std_logic_vector(3 downto 0);
    signal   vga_blue  : std_logic_vector(3 downto 0);
    signal   div       : unsigned(1 downto 0);
-   signal   v20_en    : std_logic;
    signal   div_ovl   : unsigned(0 downto 0);
 
    -- clock enable to derive the VIC20's pixel clock from the core's main clock
@@ -260,14 +256,6 @@ begin
    video_hs_o      <= not vga_hs;
    video_vs_o      <= not vga_vs;
 
-   v20_en_proc : process (clk_main_i)
-   begin
-      if falling_edge(clk_main_i) then
-         div    <= div + 1;
-         v20_en <= and(div);
-      end if;
-   end process v20_en_proc;
-
    --------------------------------------------------------------------------------------------------
    -- MiSTer C16 core / main machine
    --------------------------------------------------------------------------------------------------
@@ -277,23 +265,6 @@ begin
          clk28      => clk_main_i,
          reset      => reset_soft_i or reset_hard_i,
          wait_i     => "0",
-
---         i_sysclk_en   => v20_en,
---         i_restore_n   => restore_key_n,
---         o_p2h         => open,
---         i_ram_ext_ro  => "00000",   -- read-only region if set
---         i_ram_ext     => ram_ext_i, -- at $A000(8k),$6000(8k),$4000(8k),$2000(8k),$0400(3k)
---         i_extmem_en   => '0',
---         o_extmem_sel  => open,
---         o_extmem_r_wn => open,
---         o_extmem_addr => open,
---         i_extmem_data => x"00",
---         o_extmem_data => open,
---         o_io2_sel     => open,
---         o_io3_sel     => open,
---         o_blk123_sel  => open,
---         o_blk5_sel    => open,
---         o_ram123_sel  => open,
 
          -- keyboard interface: directly connect the CIA1
 --         cia1_pa_i     => cia1_pa_in(0) & cia1_pa_in(6 downto 1) & cia1_pa_in(7),
@@ -319,6 +290,8 @@ begin
 --         i_center      => center_i,
 --         i_pal         => '1',
 --         i_wide        => '0',
+
+
 
          -- paddle interface
 --         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
@@ -422,10 +395,7 @@ begin
          cia1_pai_o      => cia1_pa_in,
          cia1_pao_i      => cia1_pa_out(0) & cia1_pa_out(6 downto 1) & cia1_pa_out(7),
          cia1_pbi_o      => cia1_pb_in,
-         cia1_pbo_i      => cia1_pb_out(3) & cia1_pb_out(6 downto 4) & cia1_pb_out(7) & cia1_pb_out(2 downto 0),
-
-         -- Restore key = NMI
-         restore_n       => restore_key_n
+         cia1_pbo_i      => cia1_pb_out(3) & cia1_pb_out(6 downto 4) & cia1_pb_out(7) & cia1_pb_out(2 downto 0)
       ); -- keyboard_inst
 
    --------------------------------------------------------------------------------------------------
