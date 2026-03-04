@@ -200,6 +200,19 @@ architecture synthesis of main is
    constant C_HARD_RST_DELAY : natural := 100_000; -- roundabout 1/30 of a second
    signal   hard_rst_counter : natural := 0;
 
+   -- openbus logic, ram/rom selector and signals
+   signal c16_addr : std_logic_vector(15 downto 0);
+   signal c16_din : std_logic_vector(7 downto 0);
+   signal c16_dout : std_logic_vector(7 downto 0);
+   signal c16_rnw : std_logic;
+   signal cs_ram, cs0, cs1, cs_io : std_logic;
+
+   signal c16_datalatch : std_logic_vector(7 downto 0);
+   signal openbus_data : std_logic_vector(7 downto 0);
+   signal openbus_sel : std_logic;
+
+   signal ram_dout : std_logic_vector(7 downto 0);
+
 begin
 
    -- prevent data corruption by not allowing a soft reset to happen while the cache is still dirty
@@ -260,6 +273,27 @@ begin
    -- MiSTer C16 core / main machine
    --------------------------------------------------------------------------------------------------
 
+   c16_din <= ram_dout      and
+   --           kernal0_dout  and
+   --           kernal1_dout  and
+   --           basic_dout    and
+   --           fh_dout       and
+   --           fl_dout       and
+   --           cartl_dout    and
+   --           carth_dout    and
+   --           cass_dout     and
+              openbus_data;
+
+   openbus_sel <= '1' when c16_addr(15 downto 5) = x"FD" & "111" else '0';
+   openbus_data <= c16_datalatch when openbus_sel = '1' else x"FF";
+
+   process(clk_main_i)
+   begin
+       if rising_edge(clk_main_i) then
+           c16_datalatch <= c16_din;
+       end if;
+   end process;
+
    c16_inst : entity work.c16
       port map (
          clk28      => clk_main_i,
@@ -282,7 +316,7 @@ begin
          hblank     => video_hblank_o,
          vblank     => video_vblank_o,
          tvmode     => "00",
-         wide       => "0"
+         wide       => "0",
          -- 00 = None
          -- 01 = Horz
          -- 10 = Vert
@@ -291,7 +325,14 @@ begin
 --         i_pal         => '1',
 --         i_wide        => '0',
 
-
+         rnw        => c16_rnw,
+         addr       => c16_addr,
+         dout       => c16_dout,
+         din        => c16_din,
+         cs_ram     => cs_ram,
+         cs0        => cs0,
+         cs1        => cs1,
+         cs_io      => cs_io
 
          -- paddle interface
 --         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
