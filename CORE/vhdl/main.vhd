@@ -212,6 +212,7 @@ architecture synthesis of main is
    signal openbus_sel : std_logic;
 
    signal ram_dout : std_logic_vector(7 downto 0);
+   signal ram_we : std_logic;
 
 begin
 
@@ -268,6 +269,48 @@ begin
 
    video_hs_o      <= not vga_hs;
    video_vs_o      <= not vga_vs;
+
+   --------------------------------------------------------------------------------------------------
+   -- RAM
+   --------------------------------------------------------------------------------------------------
+
+   -- C16's RAM modelled as dual clock & dual port RAM so that the Commodore 16 core
+   -- as well as QNICE can access it
+   c16_ram : entity work.dualport_2clk_ram
+      generic map (
+         ADDR_WIDTH        => 16,
+         DATA_WIDTH        => 8,
+         FALLING_A         => false,      -- C64 expects read/write to happen at the rising clock edge
+         FALLING_B         => true        -- QNICE expects read/write to happen at the falling clock edge
+      )
+      port map (
+         -- C16 MiSTer core
+         clock_a           => clk_main_i,
+         address_a         => c16_addr,
+         data_a            => c16_dout,
+         wren_a            => ram_we,
+         q_a               => ram_dout,
+         cs_a              => not cs_ram
+
+         -- QNICE
+--         clock_b           => qnice_clk_i,
+--         address_b         => qnice_c64_ramx_addr,
+--         data_b            => qnice_c64_ramx_d_to,
+--         wren_b            => qnice_c64_ramx_we,
+--         q_b               => qnice_c64_ramx_d_from
+      ); -- c16_ram
+
+   process(clk_main_i)
+       variable old_cs : std_logic := '0';
+   begin
+       if rising_edge(clk_main_i) then
+           ram_we <= '0';
+           if old_cs = '1' and cs_ram = '0' then
+               ram_we <= not c16_rnw;
+           end if;
+           old_cs := cs_ram;
+       end if;
+   end process;
 
    --------------------------------------------------------------------------------------------------
    -- MiSTer C16 core / main machine
