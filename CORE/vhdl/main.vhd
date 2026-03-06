@@ -200,6 +200,9 @@ architecture synthesis of main is
    constant C_HARD_RST_DELAY : natural := 100_000; -- roundabout 1/30 of a second
    signal   hard_rst_counter : natural := 0;
 
+   signal model : std_logic := '0'; -- C16 mode
+   signal romv : std_logic := '0'; -- C16 rom version
+
    -- openbus logic, ram/rom selector and signals
    signal c16_addr : std_logic_vector(15 downto 0);
    signal c16_din : std_logic_vector(7 downto 0);
@@ -213,6 +216,17 @@ architecture synthesis of main is
 
    signal ram_dout : std_logic_vector(7 downto 0);
    signal ram_we : std_logic;
+
+   signal roml : std_logic_vector(1 downto 0);
+   signal romh : std_logic_vector(1 downto 0);
+
+   signal kernal0_dout : std_logic_vector(7 downto 0);
+   signal kernal1_dout : std_logic_vector(7 downto 0);
+   signal basic_dout : std_logic_vector(7 downto 0);
+   signal fl_dout : std_logic_vector(7 downto 0);
+   signal fh_dout : std_logic_vector(7 downto 0);
+
+   signal kern : std_logic;
 
 begin
 
@@ -313,11 +327,45 @@ begin
    end process;
 
    --------------------------------------------------------------------------------------------------
+   -- ROM
+   --------------------------------------------------------------------------------------------------
+
+   kernal0 : entity work.gen_rom
+      generic map (
+         ADDR_WIDTH        => 14,
+         INIT_FILE          => "../../CORE/C16_MiSTer/rtl/roms/c16_kernal.mif.hex"
+      )
+      port map (
+         rdclock           => clk_main_i,
+         wrclock           => clk_main_i,
+         rdaddress         => c16_addr(13 downto 0),
+         q                 => kernal0_dout,
+         cs              => (not cs1) and ((not (romh(1) or romh(0))) or kern) and (not romv) -- XXX romh = "00"
+      );
+
+   kern <= '1' when c16_addr(15 downto 8) = x"FC" else '0';
+
+   process(clk_main_i)
+       variable old_cs : std_logic := '0';
+   begin
+       if rising_edge(clk_main_i) then
+           if (reset_soft_i or reset_hard_i) then -- XXX wrong reset, check it
+               romh <= "00";
+               roml <= "00";
+           elsif model = '1' and old_cs = '1' and cs_io = '0' and c16_rnw = '0' and c16_addr(15 downto 4) = x"FDD" then
+               romh <= c16_addr(3 downto 2);
+               roml <= c16_addr(1 downto 0);
+           end if;
+           old_cs := cs_io;
+       end if;
+   end process;
+
+   --------------------------------------------------------------------------------------------------
    -- MiSTer C16 core / main machine
    --------------------------------------------------------------------------------------------------
 
    c16_din <= ram_dout      and
-   --           kernal0_dout  and
+              kernal0_dout  and
    --           kernal1_dout  and
    --           basic_dout    and
    --           fh_dout       and
