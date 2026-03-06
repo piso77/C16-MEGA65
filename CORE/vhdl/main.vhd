@@ -333,15 +333,69 @@ begin
    kernal0 : entity work.gen_rom
       generic map (
          ADDR_WIDTH        => 14,
-         INIT_FILE          => "../../CORE/C16_MiSTer/rtl/roms/c16_kernal.mif.hex"
+         INIT_FILE         => "../../CORE/C16_MiSTer/rtl/roms/c16_kernal.mif.hex"
       )
       port map (
          rdclock           => clk_main_i,
          wrclock           => clk_main_i,
          rdaddress         => c16_addr(13 downto 0),
          q                 => kernal0_dout,
-         cs              => (not cs1) and ((not (romh(1) or romh(0))) or kern) and (not romv) -- XXX romh = "00"
+         cs                => (not cs1) and ((not (romh(1) or romh(0))) or kern) and (not romv) -- XXX romh = "00"
       );
+
+   kernal1 : entity work.gen_rom
+      generic map (
+         ADDR_WIDTH        => 14,
+         INIT_FILE         => "../../CORE/C16_MiSTer/rtl/roms/c16_kernal.mif.hex"
+      )
+      port map (
+         rdclock           => clk_main_i,
+         wrclock           => clk_main_i,
+         rdaddress         => c16_addr(13 downto 0),
+         q                 => kernal1_dout,
+         cs                => (not cs1) and ((not (romh(1) or romh(0))) or kern) and romv -- XXX romh = "00"
+      );
+
+   basic : entity work.gen_rom
+      generic map (
+         ADDR_WIDTH        => 14,
+         INIT_FILE         => "../../CORE/C16_MiSTer/rtl/roms/c16_basic.mif.hex"
+      )
+      port map (
+         rdclock           => clk_main_i,
+         wrclock           => clk_main_i,
+         rdaddress         => c16_addr(13 downto 0),
+         q                 => basic_dout,
+         cs                => (not cs0) and ((not (roml(1) or roml(0)))) -- XXX roml = "00"
+      );
+
+   funcl : entity work.gen_rom
+      generic map (
+         ADDR_WIDTH        => 14,
+         INIT_FILE         => "../../CORE/C16_MiSTer/rtl/roms/3-plus-1_low.mif.hex"
+      )
+      port map (
+         rdclock           => clk_main_i,
+         wrclock           => clk_main_i,
+         rdaddress         => c16_addr(13 downto 0),
+         q                 => fl_dout,
+         cs                => (not cs0) and (roml(1) and (not roml(0))) -- XXX roml = 2
+      );
+
+   funch : entity work.gen_rom
+      generic map (
+         ADDR_WIDTH        => 14,
+         INIT_FILE         => "../../CORE/C16_MiSTer/rtl/roms/3-plus-1_high.mif.hex"
+      )
+      port map (
+         rdclock           => clk_main_i,
+         wrclock           => clk_main_i,
+         rdaddress         => c16_addr(13 downto 0),
+         q                 => fh_dout,
+         cs                => (not cs1) and (romh(1) and (not romh(0))) and (not kern) -- XXX romh = 2
+      );
+
+
 
    kern <= '1' when c16_addr(15 downto 8) = x"FC" else '0';
 
@@ -366,10 +420,10 @@ begin
 
    c16_din <= ram_dout      and
               kernal0_dout  and
-   --           kernal1_dout  and
-   --           basic_dout    and
-   --           fh_dout       and
-   --           fl_dout       and
+              kernal1_dout  and
+              basic_dout    and
+              fh_dout       and
+              fl_dout       and
    --           cartl_dout    and
    --           carth_dout    and
    --           cass_dout     and
