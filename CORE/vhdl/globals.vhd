@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------
 -- MiSTer2MEGA65 Framework
 --
--- VIC 20 for MEGA65
+-- C16 / Plus4 for MEGA65
 -- Global Constants
 --
 -- MiSTer2MEGA65 done by sy2002 and MJoergen in 2022 and licensed under GPL v3
@@ -41,8 +41,8 @@ constant QNICE_FIRMWARE           : string  := QNICE_FIRMWARE_M2M;
 -- then add all the clocks speeds here by adding more constants.
 ----------------------------------------------------------------------------------------------------------
 
--- VIC20 core clock speed
-constant CORE_CLK_SPEED       : natural := 35_463_000;   -- VIC20 core expects 35.463 MHz
+-- C16 core clock speed
+constant CORE_CLK_SPEED       : natural := 28_380_100;   -- C16 core expects 28.38010MHz
 
 -- System clock speed (crystal that is driving the FPGA) and QNICE clock speed
 -- !!! Do not touch !!!
@@ -57,8 +57,8 @@ constant QNICE_CLK_SPEED      : natural := 50_000_000;   -- a change here has de
 --    VGA_*   size of the core's target output post scandoubler
 --    If in doubt, use twice the values found in this link:
 --    https://mister-devel.github.io/MkDocs_MiSTer/advanced/nativeres/#arcade-core-default-native-resolutions
-constant VGA_DX               : natural := 912;
-constant VGA_DY               : natural := 560;
+constant VGA_DX               : natural := 768;
+constant VGA_DY               : natural := 590;
 
 --    FONT_*  size of one OSM character
 constant FONT_FILE            : string  := "../font/Anikki-16x16-m2m.rom";
