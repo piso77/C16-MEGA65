@@ -4,3 +4,6 @@
 [submodule "CORE/VIC20_MiSTer"]
 	path = CORE/VIC20_MiSTer
 	url = git@github.com:MJoergen/VIC20_MiSTer.git
+[submodule "CORE/C16_MiSTer"]
+	path = CORE/C16_MiSTer
+	url = https://github.com/piso77/C16_MiSTer.git
