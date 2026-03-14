@@ -136,7 +136,7 @@ architecture synthesis of main is
    signal   cia1_pb_in  : std_logic_vector(7 downto 0);
    signal   cia1_pb_out : std_logic_vector(7 downto 0);
 
-   signal   o_audio : std_logic_vector(5 downto 0);
+   signal   o_audio : std_logic_vector(15 downto 0);
 
    -- VIC20's IEC signals
    signal   vic20_iec_clk_out  : std_logic;
@@ -463,7 +463,7 @@ begin
          cs_ram     => cs_ram,
          cs0        => cs0,
          cs1        => cs1,
-         cs_io      => cs_io
+         cs_io      => cs_io,
 
          -- paddle interface
 --         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
@@ -471,7 +471,7 @@ begin
 --         i_potx        => pot1_x_i,
 --         i_poty        => pot1_y_i,
 
---         o_audio       => o_audio,
+         sound      => o_audio
 
          -- IEC
 --         clk_i         => vic20_iec_clk_in and hw_iec_clk_n_in,
@@ -570,8 +570,8 @@ begin
    -- MiSTer audio signal processing: Convert the core's 6-bit signal to a signed 16-bit signal
    --------------------------------------------------------------------------------------------------
 
-   audio_left_o    <= "0" & signed(o_audio) & "000000000";
-   audio_right_o   <= "0" & signed(o_audio) & "000000000";
+   audio_left_o    <= signed(o_audio);
+   audio_right_o   <= signed(o_audio);
 
 
    --------------------------------------------------------------------------------------------------
