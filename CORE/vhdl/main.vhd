@@ -471,6 +471,7 @@ begin
 --         i_potx        => pot1_x_i,
 --         i_poty        => pot1_y_i,
 
+         sid_type   => "00",  -- XXX OSM
          sound      => o_audio
 
          -- IEC
