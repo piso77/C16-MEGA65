@@ -1,10 +1,11 @@
 ----------------------------------------------------------------------------------
--- VIC 20 for MEGA65
+-- C16 / Plus4 for MEGA65
 --
 -- Wrapper for the MiSTer core that runs exclusively in the core's clock domanin
 --
--- based on VIC20_MiSTer by the MiSTer development team
--- port done by MJoergen and sy2002 in 2023 and licensed under GPL v3
+-- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
+-- based on C16_MiSTer by the MiSTer development team
+-- port done by piso in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
