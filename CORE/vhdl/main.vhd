@@ -37,11 +37,6 @@ entity main is
       -- Configuration options
       ---------------------------
 
-      -- Select VIC20's ROM: 0=Custom, 1=Standard
-      vic20_rom_i            : in    std_logic;
-      ram_ext_i              : in    std_logic_vector(4 downto 0);
-      center_i               : in    std_logic_vector(1 downto 0);
-
       -- MiSTer core main clock speed:
       -- Make sure you pass very exact numbers here, because they are used for avoiding clock drift at derived clocks
       clk_main_speed_i       : in    natural;
@@ -460,13 +455,6 @@ begin
          vblank     => video_vblank_o,
          tvmode     => "00",
          wide       => "0",
-         -- 00 = None
-         -- 01 = Horz
-         -- 10 = Vert
-         -- 11 = Both
---         i_center      => center_i,
---         i_pal         => '1',
---         i_wide        => '0',
 
          rnw        => c16_rnw,
          addr       => c16_addr,
@@ -497,12 +485,6 @@ begin
 --         cass_motor    => open,
 --         cass_sw       => '0',
 --         cass_read     => '0',
-
---         rom_std       => vic20_rom_i,
---         conf_clk      => conf_clk_i,
---         conf_wr       => conf_wr_i,
---         conf_ai       => conf_ai_i,
---         conf_di       => conf_di_i
       ); -- c16_inst
 
    --------------------------------------------------------------------------------------------------
