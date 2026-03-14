@@ -386,16 +386,6 @@ begin
          -- Configuration options
          ---------------------------
 
-         vic20_rom_i            => '0',         -- standard
-         ram_ext_i              => main_osm_control_i(C_MENU_RAM_A000) &
-                                   main_osm_control_i(C_MENU_RAM_6000) &
-                                   main_osm_control_i(C_MENU_RAM_4000) &
-                                   main_osm_control_i(C_MENU_RAM_2000) &
-                                   main_osm_control_i(C_MENU_RAM_0400),
-
-         center_i               => main_osm_control_i(C_MENU_CENTER_VERT) &
-                                   main_osm_control_i(C_MENU_CENTER_HORZ),
-
          clk_main_speed_i       => CORE_CLK_SPEED,
          video_retro15khz_i     => main_osm_control_i(C_MENU_VGA_15KHZHSVS) or main_osm_control_i(C_MENU_VGA_15KHZCS),
 
