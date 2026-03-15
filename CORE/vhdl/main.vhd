@@ -130,12 +130,6 @@ architecture synthesis of main is
    -- Generic MiSTer VIC20 signals
    signal   drive_led : std_logic;
 
-   -- directly connect the VIC20's CIA1 to the emulated keyboard matrix within keyboard.vhd
-   signal   cia1_pa_in  : std_logic_vector(7 downto 0);
-   signal   cia1_pa_out : std_logic_vector(7 downto 0);
-   signal   cia1_pb_in  : std_logic_vector(7 downto 0);
-   signal   cia1_pb_out : std_logic_vector(7 downto 0);
-
    signal   o_audio : std_logic_vector(15 downto 0);
 
    -- VIC20's IEC signals
@@ -438,11 +432,6 @@ begin
          reset      => reset_soft_i or reset_hard_i,
          wait_i     => "0",
 
-         -- keyboard interface: directly connect the CIA1
---         cia1_pa_i     => cia1_pa_in(0) & cia1_pa_in(6 downto 1) & cia1_pa_in(7),
---         cia1_pa_o     => cia1_pa_out,
---         cia1_pb_i     => cia1_pb_in(3) & cia1_pb_in(6 downto 4) & cia1_pb_in(7) & cia1_pb_in(2 downto 0),
---         cia1_pb_o     => cia1_pb_out,
          kb_key_num_i        => kb_key_num_i,
          kb_key_pressed_n_i  => kb_key_pressed_n_i,
 
@@ -512,70 +501,12 @@ begin
       end if;
    end process video_ce_proc;
 
-
-   --------------------------------------------------------------------------------------------------
-   -- Keyboard- and joystick controller
-   --------------------------------------------------------------------------------------------------
-
-   -- Convert MEGA65 keystrokes to the VIC20 keyboard matrix that the CIA1 can scan
-   -- and convert the MEGA65 joystick signals to CIA1 signals as well
-   keyboard_inst : entity work.keyboard
-      port map (
-         clk_main_i      => clk_main_i,
-         reset_i         => not reset_core_n,
-
-         -- Trigger the sequence RUN<Return> to autostart PRG files
-         trigger_run_i   => trigger_run_i,
-
-         -- Interface to the MEGA65 keyboard
-         key_num_i       => kb_key_num_i,
-         key_pressed_n_i => kb_key_pressed_n_i,
-
-         -- Interface to the MEGA65 joysticks
-         joy_1_up_n_i    => joy_1_up_n_i,
-         joy_1_down_n_i  => joy_1_down_n_i,
-         joy_1_left_n_i  => joy_1_left_n_i,
-         joy_1_right_n_i => joy_1_right_n_i,
-         joy_1_fire_n_i  => joy_1_fire_n_i,
-
-         joy_1_up_n_o    => joy_1_up_n_o,
-         joy_1_down_n_o  => joy_1_down_n_o,
-         joy_1_left_n_o  => joy_1_left_n_o,
-         joy_1_right_n_o => joy_1_right_n_o,
-         joy_1_fire_n_o  => joy_1_fire_n_o,
-
-         joy_2_up_n_i    => joy_2_up_n_i,
-         joy_2_down_n_i  => joy_2_down_n_i,
-         joy_2_left_n_i  => joy_2_left_n_i,
-         joy_2_right_n_i => joy_2_right_n_i,
-         joy_2_fire_n_i  => joy_2_fire_n_i,
-
-         joy_2_up_n_o    => joy_2_up_n_o,
-         joy_2_down_n_o  => joy_2_down_n_o,
-         joy_2_left_n_o  => joy_2_left_n_o,
-         joy_2_right_n_o => joy_2_right_n_o,
-         joy_2_fire_n_o  => joy_2_fire_n_o,
-
-         -- Interface to the MiSTer VIC20 core that directly connects to the VIC20's CIA1 instead of
-         -- going the detour of converting the MEGA65 keystrokes into PS/2 keystrokes first.
-         -- This means, that the "fpga64_keyboard" entity of the original core is not used. Instead,
-         -- we are modifying the "vic20_inst" entity so that we can route the CIA1's ports
-         -- A and B into this keyboard driver which then emulates the behavior of the physical
-         -- C64 keyboard including the possibility to "scan" via the row, i.e. pull one or more bits of
-         -- port A to zero (one by one) and read via the "column" (i.e. from port B) or vice versa.
-         cia1_pai_o      => cia1_pa_in,
-         cia1_pao_i      => cia1_pa_out(0) & cia1_pa_out(6 downto 1) & cia1_pa_out(7),
-         cia1_pbi_o      => cia1_pb_in,
-         cia1_pbo_i      => cia1_pb_out(3) & cia1_pb_out(6 downto 4) & cia1_pb_out(7) & cia1_pb_out(2 downto 0)
-      ); -- keyboard_inst
-
    --------------------------------------------------------------------------------------------------
    -- MiSTer audio signal processing: Convert the core's 6-bit signal to a signed 16-bit signal
    --------------------------------------------------------------------------------------------------
 
    audio_left_o    <= signed(o_audio);
    audio_right_o   <= signed(o_audio);
-
 
    --------------------------------------------------------------------------------------------------
    -- Hardware IEC port
