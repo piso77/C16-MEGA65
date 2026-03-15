@@ -217,14 +217,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/C16_MiSTer/rtl/c16_keymatrix.v">
+      <File Path="$PPRDIR/C16_MiSTer/rtl/colors_to_rgb.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/C16_MiSTer/rtl/colors_to_rgb.v">
+      <File Path="$PPRDIR/C16_MiSTer/rtl/mega65_c16_keymatrix.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
