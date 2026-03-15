@@ -443,6 +443,8 @@ begin
 --         cia1_pa_o     => cia1_pa_out,
 --         cia1_pb_i     => cia1_pb_in(3) & cia1_pb_in(6 downto 4) & cia1_pb_in(7) & cia1_pb_in(2 downto 0),
 --         cia1_pb_o     => cia1_pb_out,
+         kb_key_num_i        => kb_key_num_i,
+         kb_key_pressed_n_i  => kb_key_pressed_n_i,
 
          -- VGA/SCART interface
          ce_pix     => video_ce,
