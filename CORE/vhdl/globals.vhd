@@ -1,10 +1,11 @@
 ----------------------------------------------------------------------------------
 -- MiSTer2MEGA65 Framework
 --
--- C16 / Plus4 for MEGA65
 -- Global Constants
 --
--- MiSTer2MEGA65 done by sy2002 and MJoergen in 2022 and licensed under GPL v3
+-- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
+-- based on C16_MiSTer by the MiSTer development team
+-- port done by Paolo Pisati <p.pisati@gmail.com> in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library IEEE;
@@ -72,22 +73,15 @@ constant CHAR_MEM_SIZE        : natural := CHARS_DX * CHARS_DY;
 constant VRAM_ADDR_WIDTH      : natural := f_log2(CHAR_MEM_SIZE);
 
 ----------------------------------------------------------------------------------------------------------
--- VIC 20 specific devices
+-- C16 specific devices
 ----------------------------------------------------------------------------------------------------------
 
-constant C_DEV_VIC20_RAM      : std_logic_vector(15 downto 0) := x"0100";     -- VIC20's main RAM
+constant C_DEV_C16_RAM        : std_logic_vector(15 downto 0) := x"0100";     -- C16's main RAM
 constant C_DEV_IEC_VDRIVES    : std_logic_vector(15 downto 0) := x"0101";     -- Virtual Device Management System
 constant C_DEV_IEC_MOUNT      : std_logic_vector(15 downto 0) := x"0102";     -- RAM to buffer disk images
 constant C_DEV_CRT            : std_logic_vector(15 downto 0) := x"0103";     -- SW cartridges (*.CRT)
 constant C_DEV_PRG            : std_logic_vector(15 downto 0) := x"0104";     -- PRG loader
 
-
-----------------------------------------------------------------------------------------------------------
--- HyperRAM memory map (in units of 4kW)
-----------------------------------------------------------------------------------------------------------
-
-constant C_HMAP_M2M           : std_logic_vector(15 downto 0) := x"0000";     -- Reserved for the M2M framework
-constant C_HMAP_VIC20         : std_logic_vector(15 downto 0) := x"0200";     -- Start address reserved for core
 
 ----------------------------------------------------------------------------------------------------------
 -- Virtual Drive Management System

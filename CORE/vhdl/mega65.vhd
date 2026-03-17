@@ -3,9 +3,9 @@
 --
 -- MEGA65 main file that contains the whole machine
 --
+-- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
 -- based on C16_MiSTer by the MiSTer development team
--- powered by MiSTer2MEGA65 done by sy2002 and MJoergen in 2023
--- port done by piso in 2026 and licensed under GPL v3
+-- port done by Paolo Pisati <p.pisati@gmail.com> in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
@@ -321,10 +321,6 @@ begin
    hr_core_byteenable_o <= (others => '0');
    hr_core_burstcount_o <= (others => '0');
 
-   ---------------------------------------------------------------------------------------------
-   -- main_clk (VIC20 MiSTer Core clock)
-   ---------------------------------------------------------------------------------------------
-
    -- Tristate all expansion port drivers that we can directly control
    -- @TODO: As soon as we support modules that can act as busmaster, we need to become more flexible here
    cart_ctrl_oe_o       <= '0';
@@ -439,7 +435,7 @@ begin
          audio_left_o           => main_audio_left_o,
          audio_right_o          => main_audio_right_o,
 
-         -- VIC20 drive led
+         -- C16 drive led
          drive_led_o            => main_drive_led_o,
          drive_led_col_o        => main_drive_led_col_o,
 
@@ -545,8 +541,8 @@ begin
 
       case qnice_dev_id_i is
 
-         -- VIC20 RAM
-         when C_DEV_VIC20_RAM =>
+         -- C16 RAM
+         when C_DEV_C16_RAM =>
             qnice_conf_ai <= qnice_dev_addr_i(15 downto 0);
             qnice_conf_wr <= qnice_dev_we_i;
             qnice_conf_di <= qnice_dev_data_i(7 downto 0);

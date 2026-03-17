@@ -1,10 +1,11 @@
 ----------------------------------------------------------------------------------
 -- MiSTer2MEGA65 Framework
 --
--- VIC20 for MEGA65
 -- Configuration data for the Shell
 --
--- MiSTer2MEGA65 done by sy2002 and MJoergen in 2024 and licensed under GPL v3
+-- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
+-- based on C16_MiSTer by the MiSTer development team
+-- port done by Paolo Pisati <p.pisati@gmail.com> in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
@@ -77,12 +78,11 @@ type WHS_RECORD_ARRAY_TYPE is array (0 to WHS_RECORDS - 1) of WHS_RECORD_TYPE;
 
 constant SCR_WELCOME : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
+   "\n C16 for MEGA65 Version 0.1\n\n" &
 
-   " MiSTer port 2024 by MJoergen\n" &
    " Powered by MiSTer2MEGA65\n\n\n" &
 
-   " While the VIC20 is running: Press HELP\n" &
+   " While the C16 is running: Press HELP\n" &
    " to mount drives & to configure the core.\n\n" &
 
    " Both SD card slots work: The card in the\n" &
@@ -97,21 +97,20 @@ constant SCR_WELCOME : string :=
 
 constant HELP_1 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A3\n" &
+   "\n C16 for MEGA65 Version 0.1\n" &
 
-   " MiSTer port 2024 by MJoergen\n" &
    " Powered by MiSTer2MEGA65\n\n" &
 
    " Quickstart:\n\n" &
 
-   " * Create a /vic20 folder on your SD card\n" &
+   " * Create a /c16 folder on your SD card\n" &
    "   place your D64, CRT and PRG files there\n" &
    " * You can work with long file names and\n" &
    "   with arbitrary sub-folders\n" &
    " * Both SD card slots are supported. Back\n" &
    "   slot takes precedence over bottom slot\n" &
-   " * Copy the c64mega65 config file to your\n" &
-   "   /vic20 folder so that your menu settings\n" &
+   " * Copy the c16mega65 config file to your\n" &
+   "   /c16 folder so that your menu settings\n" &
    "   are being saved\n" &
    " * If you use any analog display device\n" &
    "   via the VGA port, disable HDMI:\n" &
@@ -119,16 +118,13 @@ constant HELP_1 : string :=
    " * If you use HDMI, then absolutely make\n" &
    "   sure that you enable HDMI: Flicker-free\n" &
    "   and that you run the core at 50 Hz\n" &
-   " * To use hardware cartridges, you need to\n" &
-   "   have a MEGA65 core #0 from at least mid\n" &
-   "   2023; so you might need to upgrade\n\n" &
 
    " Cursor right to learn more.       (1 of 3)\n" &
    " Press Space to close the help screen.";
 
 constant HELP_2 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
+   "\n C16 for MEGA65 Version 0.1\n\n" &
 
    " When browsing the menu:\n\n" &
 
@@ -150,7 +146,7 @@ constant HELP_2 : string :=
    " System reset:\n\n" &
 
    " Press the reset button shortly to just\n" &
-   " reset the VIC20 core and press the button\n" &
+   " reset the C16 core and press the button\n" &
    " longer than 1.5s to reset the MEGA65.\n" &
    " A short reset also restarts cartridges.\n\n" &
 
@@ -159,7 +155,7 @@ constant HELP_2 : string :=
 
 constant HELP_3 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
+   "\n C16 for MEGA65 Version 0.1\n\n" &
 
    " IEC:\n\n" &
 
@@ -364,7 +360,7 @@ constant OPTM_DY           : natural := 30;
 
 constant OPTM_ITEMS        : string :=
 
-   " VIC20 for MEGA65\n"       &
+   " C16 for MEGA65\n"       &
    "\n"                        &
    " 8:%s\n"                   &  -- %s will be replaced by OPTM_S_MOUNT when not mounted and by the filename when mounted
    " PRG:%s\n"                 &
@@ -387,7 +383,7 @@ constant OPTM_ITEMS        : string :=
    " CRT:%s\n"                 &  -- %s will be replaced by OPTM_S_CRTROM when no cartridge is loaded, otherwise by the filename of the cartridge
 
    "\n"                        &
-   " VIC20 Configuration\n"    &
+   " C16 Configuration\n"    &
    "\n"                        &
    " Flip joystick ports\n"    &
    " Audio improvements\n"     &
@@ -472,7 +468,7 @@ constant OPTM_G_CENTER_VERT   : integer := 22;
 type OPTM_GTYPE is array (0 to OPTM_SIZE - 1) of integer range 0 to 2**OPTM_GTC- 1;
 
 constant OPTM_GROUPS : OPTM_GTYPE := (
-   OPTM_G_HEADLINE,                                         -- VIC20 for MEGA65
+   OPTM_G_HEADLINE,                                         -- C16 for MEGA65
    OPTM_G_LINE,                                             --
    OPTM_G_MOUNT_8       + OPTM_G_MOUNT_DRV + OPTM_G_START,  -- 8:%s
    OPTM_G_LOAD_PRG      + OPTM_G_LOAD_ROM,                  -- PRG:%s
@@ -495,7 +491,7 @@ constant OPTM_GROUPS : OPTM_GTYPE := (
    OPTM_G_MOUNT_CRT     + OPTM_G_LOAD_ROM,                  -- CRT:%s
 
    OPTM_G_LINE,
-   OPTM_G_HEADLINE,                                         -- VIC20 Configuration
+   OPTM_G_HEADLINE,                                         -- C16 Configuration
    OPTM_G_LINE,
    OPTM_G_FLIP_JOYS     + OPTM_G_SINGLESEL,                 -- Flip joystick ports
    OPTM_G_IMPROVE_AUDIO + OPTM_G_SINGLESEL + OPTM_G_STDSEL, -- Audio improvements

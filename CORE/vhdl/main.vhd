@@ -5,7 +5,7 @@
 --
 -- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
 -- based on C16_MiSTer by the MiSTer development team
--- port done by Paolo Pisati (piso) in 2026 and licensed under GPL v3
+-- port done by Paolo Pisati <p.pisati@gmail.com> in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
