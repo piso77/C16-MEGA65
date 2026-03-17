@@ -428,55 +428,67 @@ begin
 
    c16_inst : entity work.c16
       port map (
-         clk28      => clk_main_i,
-         reset      => reset_soft_i or reset_hard_i,
-         wait_i     => "0",
-
-         kb_key_num_i        => kb_key_num_i,
-         kb_key_pressed_n_i  => kb_key_pressed_n_i,
+         clk28                  => clk_main_i,
+         reset                  => reset_soft_i or reset_hard_i,
+         wait_i                 => '0',
 
          -- VGA/SCART interface
-         ce_pix     => video_ce,
-         hsync      => vga_hs,
-         vsync      => vga_vs,
-         red        => vga_red,
-         green      => vga_green,
-         blue       => vga_blue,
-         hblank     => video_hblank_o,
-         vblank     => video_vblank_o,
-         tvmode     => "00",
-         wide       => "0",
+         ce_pix                 => video_ce,
+         hsync                  => vga_hs,
+         vsync                  => vga_vs,
+         red                    => vga_red,
+         green                  => vga_green,
+         blue                   => vga_blue,
+         hblank                 => video_hblank_o,
+         vblank                 => video_vblank_o,
+         tvmode                 => "00",
+         wide                   => "0",
 
-         rnw        => c16_rnw,
-         addr       => c16_addr,
-         dout       => c16_dout,
-         din        => c16_din,
-         cs_ram     => cs_ram,
-         cs0        => cs0,
-         cs1        => cs1,
-         cs_io      => cs_io,
+         -- memory and bus / decode logic
+         rnw                    => c16_rnw,
+         addr                   => c16_addr,
+         dout                   => c16_dout,
+         din                    => c16_din,
+         cs_ram                 => cs_ram,
+         cs0                    => cs0,
+         cs1                    => cs1,
+         cs_io                  => cs_io,
 
-         -- paddle interface
---         i_joy         => joy_1_right_n_i & joy_1_left_n_i & joy_1_down_n_i & joy_1_up_n_i,
---         i_fire        => joy_1_fire_n_i,
---         i_potx        => pot1_x_i,
---         i_poty        => pot1_y_i,
+         -- tape
+         cass_mtr               => open,
+         cass_in                => '0',
+         cass_aud               => '0,
+         cass_out               => open,
 
-         sid_type   => "00",  -- XXX OSM
-         sound      => o_audio
+         -- joystick
+         joy0                   => (others => '0'),
+         joy1                   => (others => '0'),
+
+         -- keyboard
+         kb_key_num_i           => kb_key_num_i,
+         kb_key_pressed_n_i     => kb_key_pressed_n_i,
+         key_play               => open,
 
          -- IEC
---         clk_i         => vic20_iec_clk_in and hw_iec_clk_n_in,
---         clk_o         => vic20_iec_clk_out,
---         atn_o         => vic20_iec_atn_out,
---         data_i        => vic20_iec_data_in and hw_iec_data_n_in,
---        data_o        => vic20_iec_data_out,
+--         iec_dataout            => vic20_iec_data_out,
+--         iec_datain             => vic20_iec_data_in and hw_iec_data_n_in,
+--         iec_clkout             => vic20_iec_clk_out,
+--         iec_clkin              => vic20_iec_clk_in and hw_iec_clk_n_in,
+--         iec_atnout             => vic20_iec_atn_out,
+--         iec_reset              => open,
+           iec_dataout            => open,
+           iec_datain             => '0',
+           iec_clkout             => open,
+           iec_clkin              => '0',
+           iec_atnout             => open,
+           iec_reset              => open,
 
-         -- Cassette drive
---         cass_write    => open,
---         cass_motor    => open,
---         cass_sw       => '0',
---         cass_read     => '0',
+         -- TED audio and SID selector
+         sound                  => o_audio,
+         sid_type               => (others => '0'),  -- XXX OSM
+
+         -- video mode?
+         pal                    => open
       ); -- c16_inst
 
    --------------------------------------------------------------------------------------------------
