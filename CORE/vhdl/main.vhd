@@ -291,14 +291,13 @@ begin
          data_a            => c16_dout,
          wren_a            => ram_we,
          q_a               => ram_dout,
-         cs_a              => not cs_ram
+         cs_a              => not cs_ram,
 
          -- QNICE
---         clock_b           => qnice_clk_i,
---         address_b         => qnice_c64_ramx_addr,
---         data_b            => qnice_c64_ramx_d_to,
---         wren_b            => qnice_c64_ramx_we,
---         q_b               => qnice_c64_ramx_d_from
+         clock_b           => conf_clk_i,
+         address_b         => conf_ai_i,
+         data_b            => conf_di_i,
+         wren_b            => conf_wr_i
       ); -- c16_ram
 
    process(clk_main_i)
