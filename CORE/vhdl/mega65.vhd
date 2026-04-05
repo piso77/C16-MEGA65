@@ -243,30 +243,25 @@ architecture synthesis of mega65_core is
    ---------------------------------------------------------------------------------------------
 
    -- OSM selections within qnice_osm_control_i
-   constant C_MENU_RAM_0400      : natural := 10;
-   constant C_MENU_RAM_2000      : natural := 11;
-   constant C_MENU_RAM_4000      : natural := 12;
-   constant C_MENU_RAM_6000      : natural := 13;
-   constant C_MENU_RAM_A000      : natural := 14;
-   constant C_MENU_FLIP_JOYS     : natural := 22;
-   constant C_MENU_IMPROVE_AUDIO : natural := 23;
-   constant C_MENU_IEC           : natural := 24;
-   constant C_MENU_CENTER_HORZ   : natural := 25;
-   constant C_MENU_CENTER_VERT   : natural := 26;
-   constant C_MENU_HDMI_16_9_50  : natural := 33;
-   constant C_MENU_HDMI_16_9_60  : natural := 34;
-   constant C_MENU_HDMI_4_3_50   : natural := 35;
-   constant C_MENU_HDMI_5_4_50   : natural := 36;
-   constant C_MENU_HDMI_640_60   : natural := 37;
-   constant C_MENU_HDMI_720_5994 : natural := 38;
-   constant C_MENU_HDMI_800_60   : natural := 39;
-   constant C_MENU_HDMI_FF       : natural := 41;
-   constant C_MENU_HDMI_DVI      : natural := 42;
-   constant C_MENU_CRT_EMULATION : natural := 45;
-   constant C_MENU_HDMI_ZOOM     : natural := 46;
-   constant C_MENU_VGA_STD       : natural := 50;
-   constant C_MENU_VGA_15KHZHSVS : natural := 54;
-   constant C_MENU_VGA_15KHZCS   : natural := 55;
+   constant C_MENU_FLIP_JOYS     : natural := 10;
+   constant C_MENU_IMPROVE_AUDIO : natural := 11;
+   constant C_MENU_IEC           : natural := 12;
+   constant C_MENU_CENTER_HORZ   : natural := 13;
+   constant C_MENU_CENTER_VERT   : natural := 14;
+   constant C_MENU_HDMI_16_9_50  : natural := 21;
+   constant C_MENU_HDMI_16_9_60  : natural := 22;
+   constant C_MENU_HDMI_4_3_50   : natural := 23;
+   constant C_MENU_HDMI_5_4_50   : natural := 24;
+   constant C_MENU_HDMI_640_60   : natural := 25;
+   constant C_MENU_HDMI_720_5994 : natural := 26;
+   constant C_MENU_HDMI_800_60   : natural := 27;
+   constant C_MENU_HDMI_FF       : natural := 29;
+   constant C_MENU_HDMI_DVI      : natural := 30;
+   constant C_MENU_CRT_EMULATION : natural := 33;
+   constant C_MENU_HDMI_ZOOM     : natural := 34;
+   constant C_MENU_VGA_STD       : natural := 38;
+   constant C_MENU_VGA_15KHZHSVS : natural := 42;
+   constant C_MENU_VGA_15KHZCS   : natural := 43;
    subtype  c_menu_osm_scaling is natural range 67 downto 59;
 
    signal   qnice_conf_wr : std_logic;
