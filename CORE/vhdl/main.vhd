@@ -90,6 +90,7 @@ entity main is
       -- Audio output (Signed PCM)
       audio_left_o           : out   signed(15 downto 0);
       audio_right_o          : out   signed(15 downto 0);
+      sid_type_i             : in    std_logic_vector(1 downto 0);
 
       -- C16 drive led (color is RGB)
       drive_led_o            : out   std_logic;
@@ -483,7 +484,7 @@ begin
 
          -- TED audio and SID selector
          sound                  => o_audio,
-         sid_type               => (others => '0'),  -- XXX OSM
+         sid_type               => sid_type_i,
 
          -- video mode?
          pal                    => open

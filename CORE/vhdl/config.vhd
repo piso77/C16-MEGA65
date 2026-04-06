@@ -348,7 +348,7 @@ constant OPTM_S_SAVING     : string := "<Saving>";          -- the internal writ
 --             Do use a lower case \n. If you forget one of them or if you use upper case, you will run into undefined behavior.
 --          2. Start each line that contains an actual menu item (multi- or single-select) with a Space character,
 --             otherwise you will experience visual glitches.
-constant OPTM_SIZE         : natural := 62;  -- amount of items including empty lines:
+constant OPTM_SIZE         : natural := 70;  -- amount of items including empty lines:
                                              -- needs to be equal to the number of lines in OPTM_ITEMS and amount of items in OPTM_GROUPS
                                              -- IMPORTANT: If SAVE_SETTINGS is true and OPTM_SIZE changes: Make sure to re-generate and
                                              -- and re-distribute the config file. You can make a new one using M2M/tools/make_config.sh
@@ -356,11 +356,11 @@ constant OPTM_SIZE         : natural := 62;  -- amount of items including empty 
 -- Net size of the Options menu on the screen in characters (excluding the frame, which is hardcoded to two characters)
 -- Without submenus: Use OPTM_SIZE as height, otherwise count how large the actually visible main menu is.
 constant OPTM_DX           : natural := 24;
-constant OPTM_DY           : natural := 25;
+constant OPTM_DY           : natural := 26;
 
 constant OPTM_ITEMS        : string :=
 
-   " C16 for MEGA65\n"       &
+   " C16 for MEGA65\n"         &
    "\n"                        &
    " 8:%s\n"                   &  -- %s will be replaced by OPTM_S_MOUNT when not mounted and by the filename when mounted
    " PRG:%s\n"                 &
@@ -370,8 +370,18 @@ constant OPTM_ITEMS        : string :=
    " CRT:%s\n"                 &  -- %s will be replaced by OPTM_S_CRTROM when no cartridge is loaded, otherwise by the filename of the cartridge
    "\n"                        &
 
-   " C16 Configuration\n"    &
+   " C16 Configuration\n"      &
    "\n"                        &
+
+   " SID: %s\n"                &  -- SID submenu
+   " SID card\n"               &
+   "\n"                        &
+   " None\n"                   &
+   " SID 6581\n"               &
+   " SID 8580\n"               &
+   "\n"                        &
+   " Back to main menu\n"      &
+
    " Flip joystick ports\n"    &
    " Audio improvements\n"     &
    " IEC: Use hardware port\n" &
@@ -435,6 +445,7 @@ constant OPTM_G_MOUNT_8       : integer := 1;
 constant OPTM_G_LOAD_PRG      : integer := 3;   -- used in CORE/m2m-rom/m2m.asm: change there, too, if you change it here
 constant OPTM_G_MOUNT_CRT     : integer := 5;   -- used in CORE/m2m-rom/m2m.asm: change there, too, if you change it here
 constant OPTM_G_FLIP_JOYS     : integer := 6;
+constant OPTM_G_SID_MODE      : integer := 7;
 constant OPTM_G_IMPROVE_AUDIO : integer := 9;
 constant OPTM_G_IEC           : integer := 11;
 constant OPTM_G_HDMI_MODES    : integer := 13;
@@ -462,6 +473,16 @@ constant OPTM_GROUPS : OPTM_GTYPE := (
    OPTM_G_LINE,
    OPTM_G_HEADLINE,                                         -- C16 Configuration
    OPTM_G_LINE,
+
+   OPTM_G_SUBMENU,                                          -- SID: %s
+   OPTM_G_HEADLINE,                                         -- SID card
+   OPTM_G_LINE,                                             --
+   OPTM_G_SID_MODE     + OPTM_G_STDSEL,                     -- None
+   OPTM_G_SID_MODE,                                         -- SID 6581
+   OPTM_G_SID_MODE,                                         -- SID 8580
+   OPTM_G_LINE,                                             --
+   OPTM_G_CLOSE         + OPTM_G_SUBMENU,                   -- Back to main menu
+
    OPTM_G_FLIP_JOYS     + OPTM_G_SINGLESEL,                 -- Flip joystick ports
    OPTM_G_IMPROVE_AUDIO + OPTM_G_SINGLESEL + OPTM_G_STDSEL, -- Audio improvements
    OPTM_G_IEC           + OPTM_G_SINGLESEL,                 -- IEC: Use hardware port
