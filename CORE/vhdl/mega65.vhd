@@ -262,7 +262,7 @@ architecture synthesis of mega65_core is
    constant C_MENU_VGA_STD       : natural := 38;
    constant C_MENU_VGA_15KHZHSVS : natural := 42;
    constant C_MENU_VGA_15KHZCS   : natural := 43;
-   subtype  c_menu_osm_scaling is natural range 67 downto 59;
+   subtype  c_menu_osm_scaling is natural range 55 downto 47;
 
    signal   qnice_conf_wr : std_logic;
    signal   qnice_conf_ai : std_logic_vector(15 downto 0);
