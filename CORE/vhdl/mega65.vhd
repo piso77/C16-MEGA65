@@ -269,7 +269,7 @@ architecture synthesis of mega65_core is
    signal   qnice_conf_ai : std_logic_vector(15 downto 0);
    signal   qnice_conf_di : std_logic_vector(7 downto 0);
 
-   signal   qnice_sid_type : std_logic_vector(1 downto 0);
+   signal   main_sid_type : std_logic_vector(1 downto 0);
 
    -- QNICE signals passed down to main.vhd to handle IEC drives using vdrives.vhd
    signal   qnice_iec_qnice_ce   : std_logic;
@@ -359,9 +359,9 @@ begin
    main_power_led_col_o <= x"0000FF" when main_reset_m2m_i else
                            x"00FF00";
 
-   qnice_sid_type <= "01" when qnice_osm_control_i(C_MENU_SID_6581) else
-                     "10" when qnice_osm_control_i(C_MENU_SID_8580) else
-                     "00"; -- C_MENU_SID_NONE, default state
+   main_sid_type <= "01" when main_osm_control_i(C_MENU_SID_6581) else
+                    "10" when main_osm_control_i(C_MENU_SID_8580) else
+                    "00"; -- C_MENU_SID_NONE, default state
 
    -- main.vhd contains the actual MiSTer core
    main_inst : entity work.main
@@ -436,7 +436,7 @@ begin
          -- Audio output (PCM format, signed values)
          audio_left_o           => main_audio_left_o,
          audio_right_o          => main_audio_right_o,
-         sid_type_i             => qnice_sid_type,
+         sid_type_i             => main_sid_type,
 
          -- C16 drive led
          drive_led_o            => main_drive_led_o,
