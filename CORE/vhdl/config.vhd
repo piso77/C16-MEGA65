@@ -348,7 +348,7 @@ constant OPTM_S_SAVING     : string := "<Saving>";          -- the internal writ
 --             Do use a lower case \n. If you forget one of them or if you use upper case, you will run into undefined behavior.
 --          2. Start each line that contains an actual menu item (multi- or single-select) with a Space character,
 --             otherwise you will experience visual glitches.
-constant OPTM_SIZE         : natural := 70;  -- amount of items including empty lines:
+constant OPTM_SIZE         : natural := 77;  -- amount of items including empty lines:
                                              -- needs to be equal to the number of lines in OPTM_ITEMS and amount of items in OPTM_GROUPS
                                              -- IMPORTANT: If SAVE_SETTINGS is true and OPTM_SIZE changes: Make sure to re-generate and
                                              -- and re-distribute the config file. You can make a new one using M2M/tools/make_config.sh
@@ -356,7 +356,7 @@ constant OPTM_SIZE         : natural := 70;  -- amount of items including empty 
 -- Net size of the Options menu on the screen in characters (excluding the frame, which is hardcoded to two characters)
 -- Without submenus: Use OPTM_SIZE as height, otherwise count how large the actually visible main menu is.
 constant OPTM_DX           : natural := 24;
-constant OPTM_DY           : natural := 26;
+constant OPTM_DY           : natural := 27;
 
 constant OPTM_ITEMS        : string :=
 
@@ -372,6 +372,14 @@ constant OPTM_ITEMS        : string :=
 
    " C16 Configuration\n"      &
    "\n"                        &
+
+   " Model: %s\n"              &  -- model submenu
+   " Commodore 264 model\n"    &
+   "\n"                        &
+   " C16\n"                    &
+   " Plus/4\n"                 &
+   "\n"                        &
+   " Back to main menu\n"      &
 
    " SID: %s\n"                &  -- SID submenu
    " SID card\n"               &
@@ -445,17 +453,18 @@ constant OPTM_G_MOUNT_8       : integer := 1;
 constant OPTM_G_LOAD_PRG      : integer := 3;   -- used in CORE/m2m-rom/m2m.asm: change there, too, if you change it here
 constant OPTM_G_MOUNT_CRT     : integer := 5;   -- used in CORE/m2m-rom/m2m.asm: change there, too, if you change it here
 constant OPTM_G_FLIP_JOYS     : integer := 6;
-constant OPTM_G_SID_MODE      : integer := 7;
-constant OPTM_G_IMPROVE_AUDIO : integer := 9;
-constant OPTM_G_IEC           : integer := 11;
-constant OPTM_G_HDMI_MODES    : integer := 13;
-constant OPTM_G_HDMI_FF       : integer := 14;
-constant OPTM_G_HDMI_DVI      : integer := 15;
-constant OPTM_G_CRT_EMULATION : integer := 16;
-constant OPTM_G_HDMI_ZOOM     : integer := 17;
-constant OPTM_G_VGA_MODES     : integer := 18;
-constant OPTM_G_OSM_MODE      : integer := 19;
-constant OPTM_G_ABOUT_HELP    : integer := 20;
+constant OPTM_G_MODEL         : integer := 7;
+constant OPTM_G_SID_MODE      : integer := 10;
+constant OPTM_G_IMPROVE_AUDIO : integer := 12;
+constant OPTM_G_IEC           : integer := 14;
+constant OPTM_G_HDMI_MODES    : integer := 16;
+constant OPTM_G_HDMI_FF       : integer := 17;
+constant OPTM_G_HDMI_DVI      : integer := 18;
+constant OPTM_G_CRT_EMULATION : integer := 19;
+constant OPTM_G_HDMI_ZOOM     : integer := 20;
+constant OPTM_G_VGA_MODES     : integer := 21;
+constant OPTM_G_OSM_MODE      : integer := 22;
+constant OPTM_G_ABOUT_HELP    : integer := 23;
 
 -- !!! DO NOT TOUCH !!!
 type OPTM_GTYPE is array (0 to OPTM_SIZE - 1) of integer range 0 to 2**OPTM_GTC- 1;
@@ -473,6 +482,14 @@ constant OPTM_GROUPS : OPTM_GTYPE := (
    OPTM_G_LINE,
    OPTM_G_HEADLINE,                                         -- C16 Configuration
    OPTM_G_LINE,
+
+   OPTM_G_SUBMENU,                                          -- Model: %s
+   OPTM_G_HEADLINE,                                         -- Commodore 264 model
+   OPTM_G_LINE,                                             --
+   OPTM_G_MODEL         + OPTM_G_STDSEL,                    -- C16
+   OPTM_G_MODEL,                                            -- Plus/4
+   OPTM_G_LINE,                                             --
+   OPTM_G_CLOSE         + OPTM_G_SUBMENU,                   -- Back to main menu
 
    OPTM_G_SUBMENU,                                          -- SID: %s
    OPTM_G_HEADLINE,                                         -- SID card

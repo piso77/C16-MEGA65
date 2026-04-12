@@ -243,33 +243,37 @@ architecture synthesis of mega65_core is
    ---------------------------------------------------------------------------------------------
 
    -- OSM selections within qnice_osm_control_i
-   constant C_MENU_SID_NONE      : natural := 13;
-   constant C_MENU_SID_6581      : natural := 14;
-   constant C_MENU_SID_8580      : natural := 15;
-   constant C_MENU_FLIP_JOYS     : natural := 18;
-   constant C_MENU_IMPROVE_AUDIO : natural := 19;
-   constant C_MENU_IEC           : natural := 20;
-   constant C_MENU_HDMI_16_9_50  : natural := 27;
-   constant C_MENU_HDMI_16_9_60  : natural := 28;
-   constant C_MENU_HDMI_4_3_50   : natural := 29;
-   constant C_MENU_HDMI_5_4_50   : natural := 30;
-   constant C_MENU_HDMI_640_60   : natural := 31;
-   constant C_MENU_HDMI_720_5994 : natural := 32;
-   constant C_MENU_HDMI_800_60   : natural := 33;
-   constant C_MENU_HDMI_FF       : natural := 35;
-   constant C_MENU_HDMI_DVI      : natural := 36;
-   constant C_MENU_CRT_EMULATION : natural := 39;
-   constant C_MENU_HDMI_ZOOM     : natural := 40;
-   constant C_MENU_VGA_STD       : natural := 44;
-   constant C_MENU_VGA_15KHZHSVS : natural := 48;
-   constant C_MENU_VGA_15KHZCS   : natural := 49;
-   subtype  c_menu_osm_scaling is natural range 61 downto 53;
+   constant C_MENU_MODEL_C16     : natural := 13;
+   constant C_MENU_MODEL_PLUS4   : natural := 14;
+   constant C_MENU_SID_NONE      : natural := 20;
+   constant C_MENU_SID_6581      : natural := 21;
+   constant C_MENU_SID_8580      : natural := 22;
+   constant C_MENU_FLIP_JOYS     : natural := 25;
+   constant C_MENU_IMPROVE_AUDIO : natural := 26;
+   constant C_MENU_IEC           : natural := 27;
+   constant C_MENU_HDMI_16_9_50  : natural := 34;
+   constant C_MENU_HDMI_16_9_60  : natural := 35;
+   constant C_MENU_HDMI_4_3_50   : natural := 36;
+   constant C_MENU_HDMI_5_4_50   : natural := 37;
+   constant C_MENU_HDMI_640_60   : natural := 38;
+   constant C_MENU_HDMI_720_5994 : natural := 39;
+   constant C_MENU_HDMI_800_60   : natural := 40;
+   constant C_MENU_HDMI_FF       : natural := 42;
+   constant C_MENU_HDMI_DVI      : natural := 43;
+   constant C_MENU_CRT_EMULATION : natural := 46;
+   constant C_MENU_HDMI_ZOOM     : natural := 47;
+   constant C_MENU_VGA_STD       : natural := 51;
+   constant C_MENU_VGA_15KHZHSVS : natural := 55;
+   constant C_MENU_VGA_15KHZCS   : natural := 56;
+   subtype  c_menu_osm_scaling is natural range 68 downto 60;
 
    signal   qnice_conf_wr : std_logic;
    signal   qnice_conf_ai : std_logic_vector(15 downto 0);
    signal   qnice_conf_di : std_logic_vector(7 downto 0);
 
    signal   main_sid_type : std_logic_vector(1 downto 0);
+
+   signal   main_model: std_logic;
 
    -- QNICE signals passed down to main.vhd to handle IEC drives using vdrives.vhd
    signal   qnice_iec_qnice_ce   : std_logic;
@@ -363,6 +367,9 @@ begin
                     "10" when main_osm_control_i(C_MENU_SID_8580) else
                     "00"; -- C_MENU_SID_NONE, default state
 
+   main_model <= '1' when main_osm_control_i(C_MENU_MODEL_PLUS4) else
+                 '0'; -- C_MENU_MODEL_C16, default state
+
    -- main.vhd contains the actual MiSTer core
    main_inst : entity work.main
       generic map (
@@ -437,6 +444,8 @@ begin
          audio_left_o           => main_audio_left_o,
          audio_right_o          => main_audio_right_o,
          sid_type_i             => main_sid_type,
+
+         model_i                => main_model,
 
          -- C16 drive led
          drive_led_o            => main_drive_led_o,

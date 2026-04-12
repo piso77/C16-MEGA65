@@ -92,6 +92,8 @@ entity main is
       audio_right_o          : out   signed(15 downto 0);
       sid_type_i             : in    std_logic_vector(1 downto 0);
 
+      model_i                : in    std_logic;
+
       -- C16 drive led (color is RGB)
       drive_led_o            : out   std_logic;
       drive_led_col_o        : out   std_logic_vector(23 downto 0);
@@ -191,7 +193,6 @@ architecture synthesis of main is
    constant C_HARD_RST_DELAY : natural := 100_000; -- roundabout 1/30 of a second
    signal   hard_rst_counter : natural := 0;
 
-   signal model : std_logic := '0'; -- C16 mode
    signal romv : std_logic := '0'; -- C16 rom version
 
    -- openbus logic, ram/rom selector and signals
@@ -395,7 +396,7 @@ begin
            if (reset_soft_i or reset_hard_i) then -- XXX wrong reset, check it
                romh <= "00";
                roml <= "00";
-           elsif model = '1' and old_cs = '1' and cs_io = '0' and c16_rnw = '0' and c16_addr(15 downto 4) = x"FDD" then
+           elsif model_i = '1' and old_cs = '1' and cs_io = '0' and c16_rnw = '0' and c16_addr(15 downto 4) = x"FDD" then
                romh <= c16_addr(3 downto 2);
                roml <= c16_addr(1 downto 0);
            end if;
