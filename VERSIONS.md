@@ -1,8 +1,25 @@
-=============================
-
 C16 / Plus4 for MEGA65
 
+Version 1.0 - 17 Apr 2026
+=========================
+
+Maintenance release aimed at fixing the keyboard, removing all alien OSM
+entries and adding SID sound card mixing.
+
+## New features
+
+* SID sound card support
+
+* C16 and Plus4 profile (no functional differences)
+
+# Bug fixes
+
+* Keyboard (largely) fixed
+
+* OSM cleanup
+
 Version 0.1 - 21 March 2026 WIP
+===============================
 
 ## Features
 
